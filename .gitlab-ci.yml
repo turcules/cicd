@@ -8,7 +8,8 @@ install_dependencies:
  script: yarn install
  cache:
    key:
-     files: yarn.lock
+     files:
+       - yarn.lock
    paths:
      - node_modules
 
