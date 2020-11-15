@@ -16,3 +16,4 @@ install_dependencies:
 run_tests:
  stage: test
  script: CI=true yarn test
+
