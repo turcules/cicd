@@ -15,7 +15,6 @@ install_dependencies:
        - yarn.lock
    paths:
      - node_modules
-
 run_tests:
  stage: test
  script: CI=true yarn test
