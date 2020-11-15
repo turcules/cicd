@@ -6,13 +6,13 @@ stages:
 install_dependencies:
  stage: build
  script: yarn install
+ artifacts:
+   paths:
+     - node_modules
  cache:
    key:
      files:
        - yarn.lock
-   paths:
-     - node_modules
- artifacts:
    paths:
      - node_modules
 
