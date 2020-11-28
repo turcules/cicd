@@ -3,22 +3,22 @@ stages:
   - test
   - deploy
 
-#install_dependencies:
-#  image: node:14.15.0-stretch
-#  stage: build
-#  script:
-#    - yarn install
-#    - yarn build
-#  artifacts:
-#    paths:
-#      - node_modules
-#      - build
-#  cache:
-#    key:
-#      files:
-#        - yarn.lock
-#    paths:
-#      - node_modules
+install_dependencies:
+  image: node:14.15.0-stretch
+  stage: build
+  script:
+    - yarn install
+    - yarn build
+  artifacts:
+    paths:
+      - node_modules
+      - build
+  cache:
+    key:
+      files:
+        - yarn.lock
+    paths:
+      - node_modules
 
 #run_tests:
 #  image: node:14.15.0-stretch
@@ -34,9 +34,7 @@ stages:
 test:
   stage: deploy
   script:
-    - ls -lha /www
-
-
-
+    - cp -r build /www/test-app/$CI_COMMIT_SHA
+    - ln -fsnv /var/www/test-app/$CI_COMMIT_SHA /var/www/html
 
 
