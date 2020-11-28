@@ -6,6 +6,7 @@ stages:
 install_dependencies:
   image: node:14.15.0-stretch
   stage: build
+  tags: [test]
   script:
     - yarn install
     - yarn build
@@ -22,12 +23,14 @@ install_dependencies:
 
 #run_tests:
 #  image: node:14.15.0-stretch
+#  tags: [test]
 #  stage: test
 #  script: CI=true yarn test
 
 #deploy:
 #  stage: deploy
-#  script:
+#   tags: [test]
+# script:
 #    - ls -lha
 #    - find build
 
@@ -37,4 +40,5 @@ test:
   script:
     - cp -r build/ /var/www/test-app/$CI_COMMIT_SHA
  
+
 
