@@ -1,11 +1,7 @@
 test:
   tags: [test]
   script:
-    - export
-    - cat /etc/issue
-    - pwd
-    - hostname  
-
+    - cp -r build/ /var/www/test-app/$CI_COMMIT_SHA
 
 #stages:
 #  - build
@@ -40,6 +36,7 @@ test:
 #    - ls -lha
 #    - find build
       
+
 
 
 
