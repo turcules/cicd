@@ -1,6 +1,7 @@
 test:
   tags: [test]
   script:
+    - export
     - cat /etc/issue
     - pwd
     - hostname  
@@ -39,6 +40,7 @@ test:
 #    - ls -lha
 #    - find build
       
+
 
 
 
