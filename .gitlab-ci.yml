@@ -1,29 +1,24 @@
-test:
-  tags: [test]
-  script:
-    - cp -r build/ /var/www/test-app/$CI_COMMIT_SHA
+stages:
+  - build
+  - test
+  - deploy
 
-#stages:
-#  - build
-#  - test
-#  - deploy
-#
-#install_dependencies:
-#  image: node:14.15.0-stretch
-#  stage: build
-#  script:
-#    - yarn install
-#    - yarn build
-#  artifacts:
-#    paths:
-#      - node_modules
-#      - build
-#  cache:
-#    key:
-#      files:
-#        - yarn.lock
-#    paths:
-#      - node_modules
+install_dependencies:
+  image: node:14.15.0-stretch
+  stage: build
+  script:
+    - yarn install
+    - yarn build
+  artifacts:
+    paths:
+      - node_modules
+      - build
+  cache:
+    key:
+      files:
+        - yarn.lock
+    paths:
+      - node_modules
 
 #run_tests:
 #  image: node:14.15.0-stretch
@@ -35,9 +30,11 @@ test:
 #  script:
 #    - ls -lha
 #    - find build
-      
 
-
-
-
+test:
+  stage: deploy
+  tags: [test]
+  script:
+    - cp -r build/ /var/www/test-app/$CI_COMMIT_SHA
+ 
 
