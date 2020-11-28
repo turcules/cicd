@@ -1,23 +1,31 @@
-image: node:14.15.0-stretch
 stages:
- - build
- - test
+  - build
+  - test
+  - deploy
 
 install_dependencies:
- stage: build
- script: yarn install
- artifacts:
-   paths:
-     - node_modules
- cache:
-   key:
-     files:
-       - yarn.lock
-   paths:
-     - node_modules
+  image: node:14.15.0-stretch
+  stage: build
+  script:
+    - yarn install
+    - yarn build
+  artifacts:
+    paths:
+      - node_modules
+      - static
+  cache:
+    key:
+      files:
+        - yarn.lock
+    paths:
+      - node_modules
+
 run_tests:
- stage: test
- script: CI=true yarn test
+  image: node:14.15.0-stretch
+  stage: test
+  script: CI=true yarn test
 
-
+deploy:
+  stage: deploy
+  script: ls -lha statis
 
