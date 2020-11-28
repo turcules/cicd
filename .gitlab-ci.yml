@@ -1,33 +1,40 @@
-stages:
-  - build
-  - test
-  - deploy
-
-install_dependencies:
-  image: node:14.15.0-stretch
-  stage: build
+test:
   script:
-    - yarn install
-    - yarn build
-  artifacts:
-    paths:
-      - node_modules
-      - build
-  cache:
-    key:
-      files:
-        - yarn.lock
-    paths:
-      - node_modules
+    - cat /etc/issue
+    - pwd
+    - hostname  
 
-run_tests:
-  image: node:14.15.0-stretch
-  stage: test
-  script: CI=true yarn test
 
-deploy:
-  stage: deploy
-  script:
-    - ls -lha
-    - find build
+#stages:
+#  - build
+#  - test
+#  - deploy
+#
+#install_dependencies:
+#  image: node:14.15.0-stretch
+#  stage: build
+#  script:
+#    - yarn install
+#    - yarn build
+#  artifacts:
+#    paths:
+#      - node_modules
+#      - build
+#  cache:
+#    key:
+#      files:
+#        - yarn.lock
+#    paths:
+#      - node_modules
 
+#run_tests:
+#  image: node:14.15.0-stretch
+#  stage: test
+#  script: CI=true yarn test
+
+#deploy:
+#  stage: deploy
+#  script:
+#    - ls -lha
+#    - find build
+      
