@@ -12,7 +12,7 @@ install_dependencies:
   artifacts:
     paths:
       - node_modules
-      - static
+      - build
   cache:
     key:
       files:
@@ -27,5 +27,7 @@ run_tests:
 
 deploy:
   stage: deploy
-  script: ls -lha statis
+  script:
+    - ls -lha
+    - find build
 
