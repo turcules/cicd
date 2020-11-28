@@ -35,7 +35,8 @@ test:
   stage: deploy
   script:
     - cp -r build /www/test-app/$CI_COMMIT_SHA
-    - ln -fsnv /var/www/test-app/$CI_COMMIT_SHA /var/www/html
+    - ln -fsnv /var/www/test-app/$CI_COMMIT_SHA /www/html
+
 
 
 
