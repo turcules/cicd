@@ -1,5 +1,5 @@
 test:
-  tags: test
+  tags: [test]
   script:
     - cat /etc/issue
     - pwd
@@ -39,5 +39,6 @@ test:
 #    - ls -lha
 #    - find build
       
+
 
 
