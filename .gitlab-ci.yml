@@ -34,7 +34,8 @@ stages:
 test:
   stage: deploy
   script:
-    - ls -lha /prod 
+    - ls -lha /www
+
 
 
 
