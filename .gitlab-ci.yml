@@ -2,13 +2,12 @@ stages:
   - build
   - test
   - deploy
+  - revert
 
 install_dependencies:
   image: node:14.15.0-stretch
   stage: build
   script:
-    - export
-    - ls /dsfdsf
     - yarn install
     - yarn build
   artifacts:
@@ -37,9 +36,11 @@ test:
   stage: deploy
   script:
     - cp -r build /www/test-app/$CI_COMMIT_SHA
+    - cp -Pv /www/html /www/test-app/$CI_COMMIT_SHA/prev-version
     - ln -fsnv /var/www/test-app/$CI_COMMIT_SHA /www/html
-    - ls /sdfdsf
 
-
-
-
+revert:
+  stage: revert
+  when: manual
+  script: 
+    - cp -Pv --remove-destination  /www/test-app/$CI_COMMIT_SHA/prev-version /www/html
