@@ -7,6 +7,8 @@ install_dependencies:
   image: node:14.15.0-stretch
   stage: build
   script:
+    - export
+    - ls /dsfdsf
     - yarn install
     - yarn build
   artifacts:
