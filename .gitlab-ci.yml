@@ -34,6 +34,7 @@ deploy_staging:
   extends: deploy
   variables:
     deploy_subfolder: staging
+  when: always
 
 deploy:
   stage: deploy
