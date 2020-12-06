@@ -7,16 +7,25 @@ stages:
 variables:
   docker_html_path: "/www"
   deploy_subfolder: html
+  env: prod
 
-install_dependencies:
+build_staging:
+  stage: build
+  extends: build
+  variables: 
+    env: staging
+
+build:
   image: node:14.15.0-stretch
   stage: build
+
   script:
     - yarn install
     - yarn build
+    - cp -r build build_$env
   artifacts:
     paths:
-      - build
+      - build_$env
   cache:
     key:
       files:
@@ -34,12 +43,13 @@ deploy_staging:
   extends: activate_prod
   variables:
     deploy_subfolder: staging
+    env: staging
   when: always
 
 deploy:
   stage: deploy
   script:
-    - cp -r build $docker_html_path/test-app/$CI_COMMIT_SHA
+    - cp -r build_$env $docker_html_path/test-app/$CI_COMMIT_SHA
     - cp -Pv $docker_html_path/$deploy_subfolder $docker_html_path/test-app/$CI_COMMIT_SHA/prev-version
 
 activate_prod:
@@ -53,3 +63,4 @@ revert:
   when: manual
   script: 
     - cp -Pv --remove-destination  $docker_html_path/test-app/$CI_COMMIT_SHA/prev-version $docker_html_path/html
+ 
