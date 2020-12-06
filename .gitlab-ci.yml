@@ -31,9 +31,9 @@ install_dependencies:
 
 deploy_staging:
   stage: deploy
-  extends: deploy
+  extends: activate_prod
   variables:
-    deploy_subfolder: staging
+    deploy_subfolder: staging/$CI_COMMIT_BRANCH
   when: always
 
 deploy:
@@ -41,6 +41,10 @@ deploy:
   script:
     - cp -r build $docker_html_path/test-app/$CI_COMMIT_SHA
     - cp -Pv $docker_html_path/$deploy_subfolder $docker_html_path/test-app/$CI_COMMIT_SHA/prev-version
+
+activate_prod:
+  stage: deploy
+  script: 
     - ln -fsnv /var/www/test-app/$CI_COMMIT_SHA $docker_html_path/$deploy_subfolder
   when: manual
 
