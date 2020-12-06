@@ -41,13 +41,22 @@ build:
 
 deploy_staging:
   stage: deploy
+  extends: deploy
+  variables:
+    deploy_subfolder: staging
+    env: staging
+  when: always
+
+activate_staging:
+  stage: deploy_prod
   extends: activate_prod
   variables:
     deploy_subfolder: staging
     env: staging
   when: always
 
-deploy:
+
+deploy_prod:
   stage: deploy
   script:
     - cp -r build_$env $docker_html_path/test-app/${env}_$CI_COMMIT_SHA
