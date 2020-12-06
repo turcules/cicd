@@ -5,7 +5,7 @@ stages:
   - revert
 
 variabes:
-  docker_html_path: /www
+  docker_html_path: "/www"
 
 install_dependencies:
   image: node:14.15.0-stretch
