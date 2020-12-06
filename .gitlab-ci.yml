@@ -33,7 +33,7 @@ deploy_staging:
   stage: deploy
   extends: activate_prod
   variables:
-    deploy_subfolder: staging/$CI_COMMIT_BRANCH
+    deploy_subfolder: staging
   when: always
 
 deploy:
