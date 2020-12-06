@@ -48,7 +48,7 @@ deploy_staging:
   when: always
 
 activate_staging:
-  stage: deploy_prod
+  stage: deploy
   extends: activate_prod
   variables:
     deploy_subfolder: staging
