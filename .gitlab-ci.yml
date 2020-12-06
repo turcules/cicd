@@ -4,7 +4,7 @@ stages:
   - deploy
   - revert
 
-variabes:
+variables:
   docker_html_path: "/www"
 
 install_dependencies:
