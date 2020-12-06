@@ -23,7 +23,7 @@ build:
   script:
     - yarn install
     - yarn build
-    - cp -r build build_$env
+    - mv build build_$env
   artifacts:
     paths:
       - build_$env
@@ -50,18 +50,18 @@ deploy_staging:
 deploy:
   stage: deploy
   script:
-    - cp -r build_$env $docker_html_path/test-app/$CI_COMMIT_SHA
-    - cp -Pv $docker_html_path/$deploy_subfolder $docker_html_path/test-app/$CI_COMMIT_SHA/prev-version
+    - cp -r build_$env $docker_html_path/test-app/${env}_$CI_COMMIT_SHA
+    - cp -Pv $docker_html_path/$deploy_subfolder $docker_html_path/test-app/${env}_$CI_COMMIT_SHA/prev-version
 
 activate_prod:
   stage: deploy
   script: 
-    - ln -fsnv /var/www/test-app/$CI_COMMIT_SHA $docker_html_path/$deploy_subfolder
+    - ln -fsnv /var/www/test-app/${env}_$CI_COMMIT_SHA $docker_html_path/$deploy_subfolder
   when: manual
 
 revert:
   stage: revert
   when: manual
   script: 
-    - cp -Pv --remove-destination  $docker_html_path/test-app/$CI_COMMIT_SHA/prev-version $docker_html_path/html
+    - cp -Pv --remove-destination  $docker_html_path/test-app/${env}_$CI_COMMIT_SHA/prev-version $docker_html_path/html
  
