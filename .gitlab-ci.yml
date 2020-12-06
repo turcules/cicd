@@ -6,6 +6,7 @@ stages:
 
 variables:
   docker_html_path: "/www"
+  deploy_subfolder: html
 
 install_dependencies:
   image: node:14.15.0-stretch
@@ -15,7 +16,6 @@ install_dependencies:
     - yarn build
   artifacts:
     paths:
-      - node_modules
       - build
   cache:
     key:
@@ -24,23 +24,24 @@ install_dependencies:
     paths:
       - node_modules
 
-run_tests:
-  image: node:14.15.0-stretch
-  stage: test
-  script: CI=true yarn test
+#run_tests:
+#  image: node:14.15.0-stretch
+#  stage: test
+#  script: CI=true yarn test
+
+deploy_staging:
+  stage: deploy
+  extends: deploy
+  variables:
+    deploy_subfolder: staging
 
 deploy:
   stage: deploy
   script:
-    - ls -lha
-    - find build
-
-test:
-  stage: deploy
-  script:
     - cp -r build $docker_html_path/test-app/$CI_COMMIT_SHA
-    - cp -Pv $docker_html_path/html $docker_html_path/test-app/$CI_COMMIT_SHA/prev-version
-    - ln -fsnv /var/www/test-app/$CI_COMMIT_SHA $docker_html_path/html
+    - cp -Pv $docker_html_path/$deploy_subfolder $docker_html_path/test-app/$CI_COMMIT_SHA/prev-version
+    - ln -fsnv /var/www/test-app/$CI_COMMIT_SHA $docker_html_path/$deploy_subfolder
+  when: manual
 
 revert:
   stage: revert
