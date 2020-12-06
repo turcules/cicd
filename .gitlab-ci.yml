@@ -41,7 +41,7 @@ build:
 
 deploy_staging:
   stage: deploy
-  extends: deploy
+  extends: deploy_prod
   variables:
     deploy_subfolder: staging
     env: staging
