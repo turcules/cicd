@@ -4,6 +4,9 @@ stages:
   - deploy
   - revert
 
+variabes:
+  - docker_html_path: /www
+
 install_dependencies:
   image: node:14.15.0-stretch
   stage: build
@@ -21,26 +24,26 @@ install_dependencies:
     paths:
       - node_modules
 
-#run_tests:
-#  image: node:14.15.0-stretch
-#  stage: test
-#  script: CI=true yarn test
+run_tests:
+  image: node:14.15.0-stretch
+  stage: test
+  script: CI=true yarn test
 
-#deploy:
-#  stage: deploy
-# script:
-#    - ls -lha
-#    - find build
+deploy:
+  stage: deploy
+ script:
+    - ls -lha
+    - find build
 
 test:
   stage: deploy
   script:
-    - cp -r build /www/test-app/$CI_COMMIT_SHA
-    - cp -Pv /www/html /www/test-app/$CI_COMMIT_SHA/prev-version
-    - ln -fsnv /var/www/test-app/$CI_COMMIT_SHA /www/html
+    - cp -r build $docker_html_path/test-app/$CI_COMMIT_SHA
+    - cp -Pv $docker_html_path/html $docker_html_path/test-app/$CI_COMMIT_SHA/prev-version
+    - ln -fsnv /var/www/test-app/$CI_COMMIT_SHA $docker_html_path/html
 
 revert:
   stage: revert
   when: manual
   script: 
-    - cp -Pv --remove-destination  /www/test-app/$CI_COMMIT_SHA/prev-version /www/html
+    - cp -Pv --remove-destination  $docker_html_path/test-app/$CI_COMMIT_SHA/prev-version $docker_html_path/html
