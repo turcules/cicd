@@ -10,7 +10,6 @@ variables:
   env: prod
 
 build_staging:
-  stage: build
   extends: build
   variables: 
     env: staging
@@ -41,7 +40,6 @@ build:
 #  script: CI=true yarn test
 
 deploy_staging:
-  stage: deploy
   extends: deploy_prod
   variables:
     deploy_subfolder: staging
@@ -49,10 +47,9 @@ deploy_staging:
   when: always
 
 activate_staging:
-  stage: deploy
   extends: activate_prod
   variables:
-    deploy_subfolder: $CI_COMMIT_BRANCH/staging
+    deploy_subfolder: staging/$CI_COMMIT_BRANCH
     env: staging
   when: always
 
