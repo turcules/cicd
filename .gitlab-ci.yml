@@ -45,6 +45,7 @@ deploy_staging:
     deploy_subfolder: staging/$CI_COMMIT_BRANCH
     env: staging
   when: always
+  only: {}
 
 activate_staging:
   extends: activate_prod
@@ -59,6 +60,8 @@ deploy_prod:
   script:
     - cp -r build_$env $docker_html_path/test-app/${env}_$CI_COMMIT_SHA
     - cp -Pv $docker_html_path/$deploy_subfolder $docker_html_path/test-app/${env}_$CI_COMMIT_SHA/prev-version
+  only:
+    - master
 
 activate_prod:
   stage: deploy
