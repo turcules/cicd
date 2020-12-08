@@ -14,7 +14,7 @@ build_staging:
   variables: 
     env: staging
     REACT_APP_WEBSITE_PREFIX: "[staging] "
-    PUBLIC_URL: $CI_COMMIT_BRANCH
+    PUBLIC_URL: "/$CI_COMMIT_BRANCH"
 
 build:
   image: node:14.15.0-stretch
