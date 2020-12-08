@@ -42,7 +42,7 @@ build:
 deploy_staging:
   extends: deploy_prod
   variables:
-    deploy_subfolder: staging
+    deploy_subfolder: staging/$CI_COMMIT_BRANCH
     env: staging
   when: always
 
