@@ -45,7 +45,9 @@ deploy_staging:
     deploy_subfolder: staging/$CI_COMMIT_BRANCH
     env: staging
   when: always
-  only: {}
+  only:
+    - master
+    - feature-.*
 
 activate_staging:
   extends: activate_prod
