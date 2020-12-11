@@ -48,7 +48,7 @@ deploy_staging:
   when: always
   only:
     - master
-    - ".*"
+    - "feature-.*"
 
 activate_staging:
   stage: deploy
@@ -59,7 +59,7 @@ activate_staging:
   when: always
   only:
     - master
-    - ".*"
+    - "feature-.*"
 
 deploy_prod:
   stage: deploy
