@@ -46,8 +46,7 @@ deploy_staging:
     env: staging
   when: always
   only:
-    - master
-    - feature-.*
+    - .*
 
 activate_staging:
   extends: activate_prod
@@ -55,7 +54,8 @@ activate_staging:
     deploy_subfolder: staging/$CI_COMMIT_BRANCH
     env: staging
   when: always
-
+  only:
+    - *
 
 deploy_prod:
   stage: deploy
@@ -70,10 +70,14 @@ activate_prod:
   script: 
     - ln -fsnv /var/www/test-app/${env}_$CI_COMMIT_SHA $docker_html_path/$deploy_subfolder
   when: manual
+  only:
+    - master
 
 revert:
   stage: revert
   when: manual
   script: 
     - cp -Pv --remove-destination  $docker_html_path/test-app/${env}_$CI_COMMIT_SHA/prev-version $docker_html_path/html
+  only:
+    - master
  
