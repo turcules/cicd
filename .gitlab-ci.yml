@@ -55,7 +55,7 @@ activate_staging:
     env: staging
   when: always
   only:
-    - *
+    - .*
 
 deploy_prod:
   stage: deploy
