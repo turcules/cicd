@@ -1,8 +1,14 @@
 stages:
+  - print_vars
   - build
   - test
   - deploy
   - revert
+
+print_vars:
+  stage: print_vars
+  script:
+    - export
 
 install_dependencies:
   image: node:14.15.0-stretch
