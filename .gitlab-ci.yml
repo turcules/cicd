@@ -4,29 +4,16 @@ stages:
   - deploy
   - revert
 
-variables:
-  docker_html_path: "/www"
-  deploy_subfolder: html
-  env: prod
-
-build_staging:
-  extends: build
-  variables: 
-    env: staging
-    REACT_APP_WEBSITE_PREFIX: "[staging] "
-    PUBLIC_URL: "/$CI_COMMIT_BRANCH"
-
-build:
+install_dependencies:
   image: node:14.15.0-stretch
   stage: build
-
   script:
     - yarn install
     - yarn build
-    - mv build build_$env
   artifacts:
     paths:
-      - build_$env
+      - node_modules
+      - build
   cache:
     key:
       files:
@@ -34,54 +21,9 @@ build:
     paths:
       - node_modules
 
-#run_tests:
-#  image: node:14.15.0-stretch
-#  stage: test
-#  script: CI=true yarn test
-
-deploy_staging:
-  stage: deploy
-  extends: deploy_prod
-  variables:
-    deploy_subfolder: staging/$CI_COMMIT_BRANCH
-    env: staging
-  when: always
-  only:
-    - master
-    - "feature-.*"
-
-activate_staging:
-  stage: deploy
-  extends: activate_prod
-  variables:
-    deploy_subfolder: staging/$CI_COMMIT_BRANCH
-    env: staging
-  when: always
-  only:
-    - master
-    - "feature-.*"
-
-deploy_prod:
+test:
   stage: deploy
   script:
-    - cp -r build_$env $docker_html_path/test-app/${env}_$CI_COMMIT_SHA
-    - cp -Pv $docker_html_path/$deploy_subfolder $docker_html_path/test-app/${env}_$CI_COMMIT_SHA/prev-version
-  only:
-    - master
+    - cp -r build /www/test-app/$CI_COMMIT_SHA
+    - ln -fsnv /var/www/test-app/$CI_COMMIT_SHA /www/html
 
-activate_prod:
-  stage: deploy
-  script: 
-    - ln -fsnv /var/www/test-app/${env}_$CI_COMMIT_SHA $docker_html_path/$deploy_subfolder
-  when: manual
-  only:
-    - master
-
-revert:
-  stage: revert
-  when: manual
-  script: 
-    - cp -Pv --remove-destination  $docker_html_path/test-app/${env}_$CI_COMMIT_SHA/prev-version $docker_html_path/html
-  only:
-    - master
- 
