@@ -1,14 +1,11 @@
 stages:
-  - print_vars
   - build
   - test
   - deploy
   - revert
 
-print_vars:
-  stage: print_vars
-  script:
-    - export
+variables:
+  docker_html_path: "/www"
 
 install_dependencies:
   image: node:14.15.0-stretch
@@ -30,14 +27,14 @@ install_dependencies:
 test:
   stage: deploy
   script:
-    - cp -r build /www/test-app/$CI_COMMIT_SHA
-    - cp -Pv /www/html /www/test-app/$CI_COMMIT_SHA/prev-version
-    - ln -fsnv /var/www/test-app/$CI_COMMIT_SHA /www/html
+    - cp -r build $docker_html_path/test-app/$CI_COMMIT_SHA
+    - cp -Pv $docker_html_path/html /www/test-app/$CI_COMMIT_SHA/prev-version
+    - ln -fsnv /var/www/test-app/$CI_COMMIT_SHA $docker_html_path/html
 
 revert:
   stage: revert
   when: manual
   script:
-    - cp -Pv --remove-destination /www/test-app/$CI_COMMIT_SHA/prev-version /www/html
+    - cp -Pv --remove-destination $docker_html_path/test-app/$CI_COMMIT_SHA/prev-version $docker_html_path/html
 
 
