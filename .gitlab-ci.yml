@@ -28,6 +28,8 @@ install_dependencies:
         - yarn.lock
     paths:
       - node_modules
+  tags:
+    -new-runner
 
 build_staging:
   extends: install_dependencies
@@ -45,6 +47,8 @@ deploy_staging:
   only:
     - master
     - /feature-.*/
+  tags:
+    -new-runner 
 
 deploy_prod:
   stage: deploy
@@ -53,6 +57,8 @@ deploy_prod:
     - cp -Pv $docker_html_path/$deploy_subfolder $docker_html_path/test-app/${env}_$CI_COMMIT_SHA/prev-version || true
   only:
     - master
+  tags:
+    -new-runner
 
 activate_staging:
   extends: activate_prod
@@ -71,7 +77,8 @@ activate_prod:
   when: manual
   only:
     - master
-
+  tags:
+    -new-runner
 
 
 
@@ -80,5 +87,7 @@ revert:
   when: manual
   script:
     - cp -Pv --remove-destination $docker_html_path/test-app/$CI_COMMIT_SHA/prev-version $docker_html_path/html
+  tags:
+    -new-runner
 
 
