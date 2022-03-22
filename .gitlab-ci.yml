@@ -29,7 +29,7 @@ install_dependencies:
     paths:
       - node_modules
   tags:
-    -new-runner
+    - new-runner
 
 build_staging:
   extends: install_dependencies
@@ -38,7 +38,7 @@ build_staging:
     REACT_APP_WEBSITE_PREFIX: "[staging] "
     PUBLIC_URL: "/$CI_COMMIT_BRANCH"
   tags:
-    -new-runner
+    - new-runner
 
 deploy_staging:
   extends: deploy_prod
@@ -50,7 +50,7 @@ deploy_staging:
     - master
     - /feature-.*/
   tags:
-    -new-runner 
+    - new-runner 
 
 deploy_prod:
   stage: deploy
@@ -60,7 +60,7 @@ deploy_prod:
   only:
     - master
   tags:
-    -new-runner
+    - new-runner
 
 activate_staging:
   extends: activate_prod
@@ -72,7 +72,7 @@ activate_staging:
     - master
     - /feature-.*/
   tags:
-    -new-runner
+    - new-runner
 
 activate_prod:
   stage: deploy
@@ -82,7 +82,7 @@ activate_prod:
   only:
     - master
   tags:
-    -new-runner
+    - new-runner
 
 
 
@@ -92,6 +92,6 @@ revert:
   script:
     - cp -Pv --remove-destination $docker_html_path/test-app/$CI_COMMIT_SHA/prev-version $docker_html_path/html
   tags:
-    -new-runner
+    - new-runner
 
 
