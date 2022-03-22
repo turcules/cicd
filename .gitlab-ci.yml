@@ -37,6 +37,8 @@ build_staging:
     env: staging
     REACT_APP_WEBSITE_PREFIX: "[staging] "
     PUBLIC_URL: "/$CI_COMMIT_BRANCH"
+  tags:
+    -new-runner
 
 deploy_staging:
   extends: deploy_prod
@@ -69,6 +71,8 @@ activate_staging:
   only:
     - master
     - /feature-.*/
+  tags:
+    -new-runner
 
 activate_prod:
   stage: deploy
