@@ -75,7 +75,7 @@ activate_staging:
     - new-runner
 
 activate_prod:
-  stage: deploy
+  stage: deploy  
   script:
     - ln -fsnv /var/www/test-app/${env}_$CI_COMMIT_SHA $docker_html_path/$deploy_subfolder
   when: manual
