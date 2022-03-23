@@ -5,7 +5,7 @@ stages:
   - revert
 
 variables:
-  docker_html_path: "/www"
+  docker_html_path: "/var/www"
   env: prod
   deploy_subfolder: html
 
