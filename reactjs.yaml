@@ -1,0 +1,112 @@
+---
+- hosts: frontend_servers
+
+  vars:
+    project_path: /var/www
+    repository: https://gitlab.com/entsupml/skillbox-deploy-blue-green
+
+
+  tasks: 
+
+    - name: "yarn | gpg"
+      apt_key:
+        url: https://dl.yarnpkg.com/debian/pubkey.gpg
+        state: present
+
+    - name: "Yarn | ensure debian sources list file exist"
+      file:
+        path: /etc/apt/sources.list.d/yarn.list
+        owner: root
+        mode: 0644
+        state: touch
+
+
+    - name: "yarn | ensure Debian package is in sources list"
+      lineinfile:
+        dest: /etc/apt/sources.list.d/yarn.list
+        regexp: 'deb https://dl.yarnpkg.com/debian/ stable main'
+        line: 'deb https://dl.yarnpkg.com/debian/ stable main'
+        state: present
+
+        
+    - name: "yarn | update apt cache"
+      apt:
+        update_cache: yes
+
+
+    - name: "curl deb.nodesetup_16.x"
+      shell: curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash - 
+
+
+    - name: install the package YARN, NPM, NODEJS, NGINX
+      apt:
+        pkg: ['yarn', 'nodejs', 'nginx']
+
+
+    - name: Delete the html file
+      file:
+        path: "{{ project_path }}/html"
+        state: absent
+
+
+    - name: set some variable
+      set_fact:
+        release_path: "{{ project_path }}/release/{{ lookup('pipe','date +%Y%m%d%H%M%S') }}"
+        current_path: "{{ project_path }}/html"
+
+
+    - name: Create project path
+      file:
+        dest={{ project_path }}
+        mode=0755
+        recurse=yes
+        state=directory
+
+    - name: Retrieve current release folder
+      command: readlink -f html
+      register: current_release_path
+      ignore_errors: yes
+      args:
+        chdir: "{{ project_path }}"
+
+
+    - name: create release folder
+      file:
+        dest={{ release_path }}
+        mode=0755
+        recurse=yes
+        state=directory
+        
+
+    - name: clone the repository
+      git:
+        repo: "{{ repository }}"
+        dest: "{{ release_path }}"
+
+
+    - name: YARN install dependencies
+      command: yarn install --ignore-engines
+      args:
+        chdir: "{{ release_path }}"
+
+    
+    - name: YARN build
+      command: yarn build 
+      args:
+        chdir: "{{ release_path }}"
+      environment:
+        REACT_APP_WEBSITE_PREFIX: john Doo
+
+    - name: update symlink
+      file:
+        src={{ release_path }}/build
+        dest={{ current_path }}
+        state=link
+        
+
+
+
+
+
+    
+ 
